@@ -25,6 +25,22 @@ Test the C Program for the desired output.
 
 ## C Program to create new process using Linux API system calls fork() and getpid() , getppid() and to print process ID and parent Process ID using Linux API system calls
 
+              #include <stdio.h>
+              #include <stdlib.h>
+              #include <unistd.h>
+              
+              int main() {
+                  int pid = fork();
+              
+                  if (pid == 0) { 
+                      printf("I am child, my PID is %d\n", getpid()); 
+                      printf("My parent PID is: %d\n", getppid()); 
+                      sleep(2);  // Keep child alive for verification
+                  } else { 
+                      printf("I am parent, my PID is %d\n", getpid()); 
+                      wait(NULL); 
+                  }
+              }
 
 
 
@@ -41,6 +57,7 @@ Test the C Program for the desired output.
 
 
 
+![image](https://github.com/user-attachments/assets/d99d8447-63ca-4f65-9d6e-e698cf5daac9)
 
 
 
@@ -49,7 +66,28 @@ Test the C Program for the desired output.
 ## C Program to execute Linux system commands using Linux API system calls exec() , exit() , wait() family
 
 
-
+                #include <stdlib.h>
+                #include <sys/wait.h>
+                #include <sys/types.h>
+                int main()
+                { int status;
+                printf("Running ps with execlp\n");
+                execl("ps", "ps", "ax", NULL);
+                wait(&status);
+                if (WIFEXITED(status))
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
+                else
+                puts("child did not exit successfully\n");
+                printf("Done.\n");
+                printf("Running ps with execlp. Now with path specified\n");
+                execl("/bin/ps", "ps", "ax", NULL);
+                wait(&status);
+                if (WIFEXITED(status))
+                printf("child exited with status of %d\n", WEXITSTATUS(status));
+                else
+                puts("child did not exit successfully\n");
+                printf("Done.\n");
+                exit(0);}
 
 
 
@@ -77,6 +115,7 @@ Test the C Program for the desired output.
 
 
 
+ ![image](https://github.com/user-attachments/assets/c44d8267-bbfd-4ce7-a14b-35d7dafa2b7b)
 
 
 
