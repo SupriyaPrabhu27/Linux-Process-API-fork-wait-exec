@@ -22,114 +22,98 @@ Write the C Program using Linux Process API - fork(), wait(), exec()
 Test the C Program for the desired output. 
 
 # PROGRAM:
+C Program to create new process using Linux API system calls fork() and getpid() , getppid() and to print process ID and parent Process ID using Linux API system calls
+```
+    #include <stdio.h>
+    #include <unistd.h>
 
-## C Program to create new process using Linux API system calls fork() and getpid() , getppid() and to print process ID and parent Process ID using Linux API system calls
+    int main() {
+        pid_t pid, ppid;
 
-              #include <stdio.h>
-              #include <stdlib.h>
-              #include <unistd.h>
-              
-              int main() {
-                  int pid = fork();
-              
-                  if (pid == 0) { 
-                      printf("I am child, my PID is %d\n", getpid()); 
-                      printf("My parent PID is: %d\n", getppid()); 
-                      sleep(2);  // Keep child alive for verification
-                  } else { 
-                      printf("I am parent, my PID is %d\n", getpid()); 
-                      wait(NULL); 
-                  }
-              }
+        pid = getpid();     // Get current process ID
+        ppid = getppid();   // Get parent process ID
 
+        printf("Process ID: %d\n", pid);
+        printf("Parent Process ID: %d\n", ppid);
 
-
-
-
-
-
-
-
-
-
-
+        return 0;
+    }
+```
 ##OUTPUT
 
+![image](https://github.com/user-attachments/assets/1833a6c7-0f1c-4727-a764-edd573eceab3)
 
+#PROGRAM:
 
-![image](https://github.com/user-attachments/assets/d99d8447-63ca-4f65-9d6e-e698cf5daac9)
+C Program to create new process using Linux API system calls fork() and exit()
+```
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
 
+    int main() {
+        pid_t pid;
 
+        pid = fork();  // Create a new process
 
+        if (pid < 0) {
+            // Fork failed
+            perror("fork failed");
+            exit(1);
+        } else if (pid == 0) {
+            // Child process
+            printf("Child Process:\n");
+            printf("  PID: %d\n", getpid());
+            printf("  Parent PID: %d\n", getppid());
+            exit(0);  // Child exits
+        } else {
+            // Parent process
+            printf("Parent Process:\n");
+            printf("  PID: %d\n", getpid());
+            printf("  Child PID: %d\n", pid);
+            exit(0);  // Parent exits
+        }
+    }
+```
+##OUTPUT
 
+![image](https://github.com/user-attachments/assets/faddae11-b487-47f1-9ce5-452898936b75)
 
 ## C Program to execute Linux system commands using Linux API system calls exec() , exit() , wait() family
+```
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <unistd.h>
 
+    int main() {
+        printf("Before executing ls -l\n");
 
-                #include <stdlib.h>
-                #include <sys/wait.h>
-                #include <sys/types.h>
-                int main()
-                { int status;
-                printf("Running ps with execlp\n");
-                execl("ps", "ps", "ax", NULL);
-                wait(&status);
-                if (WIFEXITED(status))
-                printf("child exited with status of %d\n", WEXITSTATUS(status));
-                else
-                puts("child did not exit successfully\n");
-                printf("Done.\n");
-                printf("Running ps with execlp. Now with path specified\n");
-                execl("/bin/ps", "ps", "ax", NULL);
-                wait(&status);
-                if (WIFEXITED(status))
-                printf("child exited with status of %d\n", WEXITSTATUS(status));
-                else
-                puts("child did not exit successfully\n");
-                printf("Done.\n");
-                exit(0);}
+        // execl(path, arg0, arg1, ..., NULL)
+        execl("/bin/ls", "ls", "-l", NULL);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // If execl() is successful, the lines below won't execute
+        perror("execl failed");
+        exit(1);
+    }
+```
 ##OUTPUT
 
-
-
- ![image](https://github.com/user-attachments/assets/c44d8267-bbfd-4ce7-a14b-35d7dafa2b7b)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image](https://github.com/user-attachments/assets/5255bbc4-d529-44e4-9936-e533a462adc9)
 
 # RESULT:
 The programs are executed successfully.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
